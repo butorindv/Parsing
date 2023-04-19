@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import lxml
 
 
 # Функция читает файл с прокси-серверами и возвращает список серверов
@@ -33,17 +32,16 @@ def proxy_checker(url, list_proxy):
         try:
             req = requests.get(url, proxies=proxy_for_request(item), timeout=5)
             print(f"{url} - {req} - {item.split('@')[1]}")
-        except Exception:
+        except requests.exceptions.RequestException:
             print(f"ERROR: {url} - {req} - {item.split('@')[1]}")
 
 
 # Проверка сайта без прокси
 def url_checker_non_proxy(url):
-    req = ''
     try:
         req = requests.get(url, timeout=5)
         print(f"{url} - {req} - No proxy")
-    except Exception:
+    except requests.exceptions.RequestException:
         print(f"ERROR: {url} - No proxy")
 
 
