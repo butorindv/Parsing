@@ -1,5 +1,8 @@
+import csv
+
 import requests
 from bs4 import BeautifulSoup
+import os
 
 
 # Функция читает файл с прокси-серверами и возвращает список серверов
@@ -56,3 +59,48 @@ def ip_useragent_checker(headers_dict, proxy_server_dict=None):
     src = BeautifulSoup(req.text, 'lxml')
     return f"IP: {src.find('span', class_='mono red copydata').text}\n" \
            f"User-Agent: {src.find('span', class_='mono copydata').text}"
+
+
+# Функция для аолучения списка файлов по имени папки
+def creator_lisr_files(dir_name):
+    return os.listdir(dir_name)
+
+
+# Создается csv файл с шапкой таблицы
+def creator_file_csv(file_name, *columns):
+    try:
+        with open(file_name, 'w', encoding='utf-8-sig', newline="") as file:
+            writer = csv.writer(file, delimiter=';')
+            writer.writerow(
+                (
+                    columns
+                )
+            )
+    except Exception:
+        print('ERROR')
+        return
+
+
+# Добавление в таблицу, созданную в creator_file_csv, данных
+def adder_data_in_file(file_name, *data):
+    with open(file_name, 'a', encoding='utf-8-sig', newline="") as file:
+        try:
+            writer = csv.writer(file, delimiter=';')
+            writer.writerow(
+                (
+                    data
+                )
+            )
+        except Exception:
+            print('ERROR')
+            return
+
+
+def reader_file(file_name):
+    # try:
+        with open(file_name, 'r', encoding='utf-8-sig') as file:
+            return file.read()
+
+    # except Exception:
+    #     print('ERROR')
+    #     return ''
